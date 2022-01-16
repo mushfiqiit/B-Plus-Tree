@@ -286,15 +286,15 @@ void BPTree::insertInternal(string x, string y,Node* cursor,Node* child)
 
         cursor->size=(MAX + 1)/2;
 
-        newInternal->size=MAX-(MAX + 1)/2;
+        newInternal->size=MAX+1-(MAX + 1)/2;
 
-        for (i=0,j=cursor->size+1;i<newInternal->size;i++,j++)
+        for (i=0,j=cursor->size;i<newInternal->size;i++,j++)
         {
             newInternal->key[i]=virtualKey[j];
             newInternal->value[i]=virtualValue[j];
         }
 
-        for (i=0,j=cursor->size+1;i<newInternal->size+1;i++,j++)
+        for (i=0,j=cursor->size;i<newInternal->size+1;i++,j++)
         {
             newInternal->ptr[i]=virtualPtr[j];
         }
