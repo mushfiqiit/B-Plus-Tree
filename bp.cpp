@@ -30,7 +30,7 @@ class BPTree {
 public:
     BPTree();
     void search(string);
-    void insert(string);
+    void insert(string, string);
     void display(Node*);
     Node* getRoot();
 };
@@ -40,6 +40,7 @@ Node::Node()
 {
     key = new string[MAX];
     ptr = new Node*[MAX + 1];
+    value= new string[MAX];
 }
 
 // Initialise the BPTree Node
@@ -104,74 +105,76 @@ void BPTree::search(string x)
 
 // Function to implement the Insert
 // Operation in B+ Tree
-void BPTree::insert(string x)
+void BPTree::insert(string x, string y)
 {
 
     // If root is null then return
     // newly created node
-    if (root == NULL) {
+    if (root == NULL)
+    {
         root = new Node;
         root->key[0] = x;
+        root->value[0]=y;
         root->IS_LEAF = true;
         root->size = 1;
     }
 
     // Traverse the B+ Tree
-    else {
+    else
+    {
         Node* cursor = root;
         Node* parent;
 
         // Till cursor reaches the
         // leaf node
         while (cursor->IS_LEAF
-               == false) {
-
+               == false)
+        {
             parent = cursor;
-
-            for (int i = 0;
-                 i < cursor->size;
-                 i++) {
+            for (int i = 0;i < cursor->size;i++)
+            {
 
                 // If found the position
                 // where we have to insert
                 // node
-                if (x < cursor->key[i]) {
-                    cursor
-                        = cursor->ptr[i];
+                if (x < cursor->key[i])
+                {
+                    cursor=cursor->ptr[i];
                     break;
                 }
 
                 // If reaches the end
-                if (i == cursor->size - 1) {
-                    cursor
-                        = cursor->ptr[i + 1];
+                if (i == cursor->size - 1)
+                {
+                    cursor=cursor->ptr[i + 1];
                     break;
                 }
             }
         }
 
-        if (cursor->size < MAX) {
+        if (cursor->size < MAX)
+        {
             int i = 0;
-            while (x > cursor->key[i]
-                   && i < cursor->size) {
+            while (x > cursor->key[i] && i < cursor->size)
+            {
                 i++;
             }
 
-            for (int j = cursor->size;
-                 j > i; j--) {
-                cursor->key[j]
-                    = cursor->key[j - 1];
+            for (int j = cursor->size;j > i; j--)
+            {
+                cursor->key[j]= cursor->key[j - 1];
             }
 
             cursor->key[i] = x;
+            cursor->value[i]=y;
             cursor->size++;
 
-            cursor->ptr[cursor->size]
-                = cursor->ptr[cursor->size - 1];
+            cursor->ptr[cursor->size]= cursor->ptr[cursor->size - 1];
             cursor->ptr[cursor->size - 1] = NULL;
         }
 
-        else {
+        else
+        {
 
             // Create a newLeaf node
             Node* newLeaf = new Node;
@@ -464,9 +467,9 @@ int main()
     BPTree node;
 
     // Create B+ Tree
-    node.insert("Hello");
-    node.insert("Mushfiq");
-    node.insert("Abrakadabra");
+    node.insert("Hello", "a");
+    node.insert("Mushfiq", "b");
+    node.insert("Abrakadabra", "c");
     node.search("Mushfiq");
     node.search("Hi");
     /*
